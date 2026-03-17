@@ -87,6 +87,13 @@ export class StorageService implements OnModuleInit {
     return key;
   }
 
+  async getObject(key: string): Promise<string> {
+    const result = await this.s3.send(
+      new GetObjectCommand({ Bucket: this.bucket, Key: key }),
+    );
+    return await result.Body!.transformToString('utf-8');
+  }
+
   async getPresignedUrl(key: string, expiresIn = 3600): Promise<string> {
     const command = new GetObjectCommand({ Bucket: this.bucket, Key: key });
     return getSignedUrl(this.s3, command, { expiresIn });

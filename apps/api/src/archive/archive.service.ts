@@ -66,12 +66,35 @@ export class ArchiveService {
     let summaryUrl: string | undefined;
 
     if (archive.storagePath) {
-      contentUrl = await this.storageService.getPresignedUrl(
-        `${archive.storagePath}/original.html`,
-      );
+      contentUrl = `/api/archives/${id}/content`;
     }
 
     return { ...archive, contentUrl, summaryUrl };
+  }
+
+  async getContent(id: string): Promise<string> {
+    const archive = await this.archiveRepo.findOneOrFail({ where: { id } });
+    if (!archive.storagePath) throw new Error('No content available');
+
+    const html = await this.storageService.getObject(
+      `${archive.storagePath}/original.html`,
+    );
+
+    // 링크 비활성화 + 스크립트 제거 CSS/JS 주입
+    const injection = `
+<style>
+  a { pointer-events: none !important; cursor: default !important; color: inherit !important; text-decoration: none !important; }
+  form { pointer-events: none !important; }
+</style>
+<script>
+  document.addEventListener('click', function(e) { e.preventDefault(); e.stopPropagation(); }, true);
+</script>`;
+
+    // </head> 앞에 주입, 없으면 맨 앞에
+    if (html.includes('</head>')) {
+      return html.replace('</head>', injection + '</head>');
+    }
+    return injection + html;
   }
 
   async update(id: string, dto: UpdateArchiveDto) {
