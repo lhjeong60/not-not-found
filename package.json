@@ -1,0 +1,16 @@
+{
+  "name": "not-not-found",
+  "private": true,
+  "version": "0.0.1",
+  "description": "나만의 디지털 알렉산드리아 도서관 — 404가 되기 전에 내가 지킨다",
+  "scripts": {
+    "build": "turbo build",
+    "dev": "turbo dev",
+    "lint": "turbo lint",
+    "clean": "turbo clean"
+  },
+  "devDependencies": {
+    "turbo": "^2.4.0"
+  },
+  "packageManager": "pnpm@8.5.1"
+}

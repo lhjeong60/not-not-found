@@ -1,0 +1,13 @@
+{
+  "name": "@not-not-found/extension",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite build --watch",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@not-not-found/shared": "workspace:*"
+  }
+}

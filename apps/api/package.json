@@ -1,0 +1,15 @@
+{
+  "name": "@not-not-found/api",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "build": "nest build",
+    "dev": "nest start --watch",
+    "start": "node dist/main",
+    "lint": "eslint .",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@not-not-found/shared": "workspace:*"
+  }
+}
