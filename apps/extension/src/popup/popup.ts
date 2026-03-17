@@ -24,11 +24,16 @@ saveBtn.addEventListener('click', async () => {
     // Try content script capture
     let html: string | undefined;
     let title = tab.title || '';
+    let pageUrl = tab.url!;
     try {
       const response = await chrome.tabs.sendMessage(tab.id, { type: 'CAPTURE_PAGE' });
       if (response?.success && response.data) {
         html = response.data.html;
         title = response.data.title || title;
+        // Content script의 window.location.href가 더 정확 (SPA 등 대응)
+        if (response.data.url) {
+          pageUrl = response.data.url;
+        }
       }
     } catch {
       // Content script not available — will fallback to Puppeteer
@@ -39,7 +44,7 @@ saveBtn.addEventListener('click', async () => {
     const res = await fetch(`${apiBaseUrl}/api/archives`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ url: tab.url, title, html }),
+      body: JSON.stringify({ url: pageUrl, title, html }),
     });
 
     if (!res.ok) throw new Error(`API ${res.status}`);

@@ -1,5 +1,6 @@
-export async function captureCurrentPage(): Promise<{ html: string; title: string }> {
+export async function captureCurrentPage(): Promise<{ html: string; title: string; url: string }> {
   const title = document.title;
+  const url = window.location.href;
 
   // Clone the document to avoid modifying the live page
   const clone = document.documentElement.cloneNode(true) as HTMLElement;
@@ -36,7 +37,7 @@ export async function captureCurrentPage(): Promise<{ html: string; title: strin
   }
 
   const html = `<!DOCTYPE html>\n${clone.outerHTML}`;
-  return { html, title };
+  return { html, title, url };
 }
 
 function blobToDataUrl(blob: Blob): Promise<string> {
