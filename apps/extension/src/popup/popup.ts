@@ -4,7 +4,7 @@ const apiUrlInput = document.getElementById('api-url') as HTMLInputElement;
 
 // Load saved API URL
 chrome.storage.sync.get('apiBaseUrl', ({ apiBaseUrl }) => {
-  apiUrlInput.value = apiBaseUrl || 'http://localhost:3000';
+  apiUrlInput.value = apiBaseUrl || 'http://localhost:8080';
 });
 
 // Save API URL on change

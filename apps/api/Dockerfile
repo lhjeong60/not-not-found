@@ -33,5 +33,5 @@ COPY --from=base /app/apps/api/node_modules ./apps/api/node_modules
 COPY --from=base /app/apps/api/package.json ./apps/api/
 
 WORKDIR /app/apps/api
-EXPOSE 3000
+EXPOSE 8080
 CMD ["node", "dist/main.js"]

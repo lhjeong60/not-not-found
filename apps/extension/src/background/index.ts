@@ -41,7 +41,7 @@ async function sendToApi(payload: {
   title: string;
   html?: string;
 }): Promise<{ success: boolean; message: string; id?: string }> {
-  const { apiBaseUrl = 'http://localhost:3000' } = await chrome.storage.sync.get('apiBaseUrl');
+  const { apiBaseUrl = 'http://localhost:8080' } = await chrome.storage.sync.get('apiBaseUrl');
 
   try {
     const res = await fetch(`${apiBaseUrl}/api/archives`, {
