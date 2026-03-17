@@ -1,0 +1,13 @@
+{$DOMAIN:localhost} {
+	# API 프록시
+	handle /api/* {
+		reverse_proxy app:3000
+	}
+
+	# 웹 UI 정적 파일
+	handle {
+		root * /srv/web
+		try_files {path} /index.html
+		file_server
+	}
+}

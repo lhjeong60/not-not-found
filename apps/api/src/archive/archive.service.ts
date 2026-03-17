@@ -1,21 +1,21 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Inject } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { InjectQueue } from '@nestjs/bull';
 import { Repository, Like, FindOptionsWhere } from 'typeorm';
-import { Queue } from 'bull';
+import { PGMQ } from '@baz-scm/pgmq-ts';
 import { ArchiveStatus } from '@not-not-found/shared';
 import { Archive } from './archive.entity';
 import { CreateArchiveDto } from './dto/create-archive.dto';
 import { UpdateArchiveDto } from './dto/update-archive.dto';
 import { ListArchivesQueryDto } from './dto/list-archives-query.dto';
+import { PGMQ_CLIENT, ARCHIVE_QUEUE } from '../queue/queue.module';
 
 @Injectable()
 export class ArchiveService {
   constructor(
     @InjectRepository(Archive)
     private readonly archiveRepo: Repository<Archive>,
-    @InjectQueue('archive')
-    private readonly archiveQueue: Queue,
+    @Inject(PGMQ_CLIENT)
+    private readonly pgmq: InstanceType<typeof PGMQ>,
   ) {}
 
   async create(dto: CreateArchiveDto) {
@@ -28,7 +28,7 @@ export class ArchiveService {
     });
     const saved = await this.archiveRepo.save(archive);
 
-    await this.archiveQueue.add('process', {
+    await this.pgmq.sendMessage(ARCHIVE_QUEUE, {
       archiveId: saved.id,
       url: dto.url,
       html: dto.html,
@@ -53,7 +53,6 @@ export class ArchiveService {
       take: limit,
     });
 
-    // Filter by tag in memory (simple-array limitation)
     const filtered = tag ? data.filter((a) => a.tags.includes(tag)) : data;
 
     return { data: filtered, total, page, limit };
