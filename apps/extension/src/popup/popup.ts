@@ -18,10 +18,10 @@ saveBtn.addEventListener('click', async () => {
 
   try {
     const response = await chrome.runtime.sendMessage({ type: 'SAVE_PAGE' });
-    if (response.success) {
+    if (response?.success) {
       setStatus('success', '저장 완료!');
     } else {
-      setStatus('error', `실패: ${response.message}`);
+      setStatus('error', `실패: ${response?.message || '응답 없음'}`);
     }
   } catch (error: any) {
     setStatus('error', `오류: ${error.message}`);
