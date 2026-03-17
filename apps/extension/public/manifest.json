@@ -4,6 +4,7 @@
   "description": "404가 되기 전에, 내가 지킨다",
   "version": "0.0.1",
   "permissions": ["activeTab", "storage"],
+  "host_permissions": ["http://localhost:*/*", "https://*/*"],
   "action": {
     "default_popup": "src/popup/popup.html",
     "default_title": "Not Not Found"
