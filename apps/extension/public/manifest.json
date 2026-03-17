@@ -1,0 +1,26 @@
+{
+  "manifest_version": 3,
+  "name": "Not Not Found",
+  "description": "404가 되기 전에, 내가 지킨다",
+  "version": "0.0.1",
+  "permissions": ["activeTab", "storage"],
+  "action": {
+    "default_popup": "src/popup/popup.html",
+    "default_title": "Not Not Found"
+  },
+  "background": {
+    "service_worker": "src/background/index.ts",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["src/content/index.ts"],
+      "run_at": "document_idle"
+    }
+  ],
+  "icons": {
+    "48": "icon48.png",
+    "128": "icon128.png"
+  }
+}

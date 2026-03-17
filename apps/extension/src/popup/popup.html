@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=300" />
+  <link rel="stylesheet" href="popup.css" />
+  <title>Not Not Found</title>
+</head>
+<body>
+  <div class="container">
+    <h1 class="title">Not Not Found</h1>
+    <p class="subtitle">404가 되기 전에, 내가 지킨다</p>
+    <button id="save-btn" class="save-btn">저장하기</button>
+    <div id="status" class="status"></div>
+    <div class="settings">
+      <label for="api-url">API URL</label>
+      <input id="api-url" type="url" placeholder="http://localhost:3000" />
+    </div>
+  </div>
+  <script type="module" src="popup.ts"></script>
+</body>
+</html>

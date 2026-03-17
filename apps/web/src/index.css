@@ -1,0 +1,181 @@
+@import 'tailwindcss';
+
+@theme {
+  /* Light mode: sunlit library */
+  --color-cream-50: #fefcf3;
+  --color-cream-100: #fdf6e3;
+  --color-cream-200: #f5e6c8;
+  --color-cream-300: #e8d5b7;
+
+  /* Dark mode: candlelit library */
+  --color-navy-800: #16213e;
+  --color-navy-900: #0f1729;
+  --color-navy-950: #0a0f1d;
+
+  /* Amber accents (candlelight) */
+  --color-amber-400: #f0a500;
+  --color-amber-500: #d4930a;
+  --color-amber-600: #b8820e;
+
+  /* Wood tones */
+  --color-wood-300: #c4a882;
+  --color-wood-400: #a68a5b;
+  --color-wood-500: #8b6914;
+  --color-wood-600: #6d4c1d;
+  --color-wood-700: #4a3520;
+  --color-wood-800: #3d2b1a;
+
+  /* Book colors */
+  --color-book-red: #8b2500;
+  --color-book-blue: #1a3a5c;
+  --color-book-green: #2d5016;
+  --color-book-purple: #4a1942;
+  --color-book-teal: #1a4a4a;
+  --color-book-brown: #5c3a1e;
+  --color-book-navy: #0d1b3e;
+  --color-book-wine: #6b1d3a;
+
+  --font-serif: 'Noto Serif KR', 'Playfair Display', serif;
+  --font-sans: 'Inter', system-ui, sans-serif;
+}
+
+/* Base styles */
+body {
+  font-family: var(--font-sans);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Light mode body */
+body {
+  background-color: var(--color-cream-100);
+  color: #2c2c2c;
+}
+
+/* Dark mode body */
+.dark body {
+  background-color: var(--color-navy-900);
+  color: #e8d5b7;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-wood-400);
+  border-radius: 4px;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: var(--color-wood-700);
+}
+
+/* Book spine vertical text */
+.vertical-text {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+}
+
+/* Book hover effect */
+.book-spine {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.book-spine:hover {
+  transform: translateY(-8px) rotate(-2deg);
+  z-index: 10;
+}
+
+/* Wooden shelf */
+.shelf-plank {
+  background: linear-gradient(
+    180deg,
+    var(--color-wood-400) 0%,
+    var(--color-wood-600) 40%,
+    var(--color-wood-700) 60%,
+    var(--color-wood-600) 80%,
+    var(--color-wood-400) 100%
+  );
+  box-shadow:
+    0 4px 8px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.dark .shelf-plank {
+  background: linear-gradient(
+    180deg,
+    var(--color-wood-600) 0%,
+    var(--color-wood-700) 40%,
+    var(--color-wood-800) 60%,
+    var(--color-wood-700) 80%,
+    var(--color-wood-600) 100%
+  );
+}
+
+/* Shelf back wall */
+.shelf-back {
+  background: linear-gradient(
+    180deg,
+    var(--color-cream-200) 0%,
+    var(--color-cream-300) 100%
+  );
+}
+
+.dark .shelf-back {
+  background: linear-gradient(
+    180deg,
+    var(--color-navy-950) 0%,
+    var(--color-navy-800) 100%
+  );
+}
+
+/* Unread book glow */
+.book-unread {
+  box-shadow:
+    0 0 8px rgba(240, 165, 0, 0.3),
+    inset 0 0 20px rgba(255, 255, 255, 0.05);
+}
+
+.dark .book-unread {
+  box-shadow:
+    0 0 12px rgba(240, 165, 0, 0.4),
+    inset 0 0 20px rgba(255, 255, 255, 0.05);
+}
+
+/* Read book - muted */
+.book-read {
+  opacity: 0.75;
+  filter: saturate(0.7);
+}
+
+/* Page open animation */
+.page-enter {
+  animation: pageOpen 0.5s ease-out forwards;
+}
+
+@keyframes pageOpen {
+  from {
+    transform: perspective(1000px) rotateY(-90deg);
+    opacity: 0;
+  }
+  to {
+    transform: perspective(1000px) rotateY(0deg);
+    opacity: 1;
+  }
+}
+
+/* Fade in animation */
+.fade-in {
+  animation: fadeIn 0.3s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
