@@ -8,6 +8,7 @@ import { CreateArchiveDto } from './dto/create-archive.dto';
 import { UpdateArchiveDto } from './dto/update-archive.dto';
 import { ListArchivesQueryDto } from './dto/list-archives-query.dto';
 import { PGMQ_CLIENT, ARCHIVE_QUEUE } from '../queue/queue.module';
+import { StorageService } from '../storage/storage.service';
 
 @Injectable()
 export class ArchiveService {
@@ -16,6 +17,7 @@ export class ArchiveService {
     private readonly archiveRepo: Repository<Archive>,
     @Inject(PGMQ_CLIENT)
     private readonly pgmq: InstanceType<typeof PGMQ>,
+    private readonly storageService: StorageService,
   ) {}
 
   async create(dto: CreateArchiveDto) {
@@ -59,7 +61,17 @@ export class ArchiveService {
   }
 
   async findOne(id: string) {
-    return this.archiveRepo.findOneOrFail({ where: { id } });
+    const archive = await this.archiveRepo.findOneOrFail({ where: { id } });
+    let contentUrl: string | undefined;
+    let summaryUrl: string | undefined;
+
+    if (archive.storagePath) {
+      contentUrl = await this.storageService.getPresignedUrl(
+        `${archive.storagePath}/original.html`,
+      );
+    }
+
+    return { ...archive, contentUrl, summaryUrl };
   }
 
   async update(id: string, dto: UpdateArchiveDto) {
