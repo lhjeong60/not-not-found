@@ -20,11 +20,14 @@ async function handleSavePage(): Promise<{ success: boolean; message: string; id
   }
 
   // Send capture request to content script
-  const response: CaptureResult = await chrome.tabs.sendMessage(tab.id, {
-    type: 'CAPTURE_PAGE',
-  });
+  let response: CaptureResult | undefined;
+  try {
+    response = await chrome.tabs.sendMessage(tab.id, { type: 'CAPTURE_PAGE' });
+  } catch {
+    // Content script not injected (e.g. chrome:// pages, new tab)
+  }
 
-  if (!response.success || !response.data) {
+  if (!response?.success || !response.data) {
     // Fallback: send URL only (server will use Puppeteer)
     return await sendToApi({ url: tab.url, title: tab.title || '' });
   }
